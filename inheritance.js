@@ -12,12 +12,23 @@ function Student(name, id) {
   this.id = id;
 }
 
-Student.prototype = Object.create(Person.prototype);
-Object.defineProperty(Student.prototype, 'constructor', {
-  value: Student,
-  enumerable: false,
-  writable: true,
-});
+function inherit(subClass, superClass) {
+  // inherit prototype methods and properties
+  subClass.prototype = Object.create(superClass.prototype);
+
+  // inherit static methods
+  subClass.__proto__ = superClass;
+  // Object.setPrototypeOf(subClass, superClass); <-- this also works
+
+  // set constructor and set it to non-enumerable
+  Object.defineProperty(subClass.prototype, 'constructor', {
+    value: subClass,
+    enumerable: false,
+    writable: true,
+  });
+}
+
+inherit(Student, Person);
 
 Student.prototype.getId = function () {
   return this.id;
@@ -25,7 +36,7 @@ Student.prototype.getId = function () {
 
 const colloque = new Student('colloque', 1);
 console.log(colloque.getName());
-console.log(Function instanceof Object);
+console.log(colloque.getId());
 
 // Why is it necessary to set the prototype constructor?
 // https://stackoverflow.com/questions/8453887/why-is-it-necessary-to-set-the-prototype-constructor

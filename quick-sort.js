@@ -4,26 +4,39 @@ function swap(array, i, j) {
   array[j] = temp;
 }
 
-function partition(array, start, end) {
-  const pivot = array[end - 1];
-  let i = start - 1;
+function partition(array, left, right) {
+  const pivot = array[Math.floor((left + right) / 2)];
+  let i = left;
+  let j = right;
 
-  for (let j = start; j < end - 1; j++) {
-    if (array[j] <= pivot) {
+  while (i <= j) {
+    while (array[i] < pivot) {
       i++;
+    }
+
+    while (array[j] > pivot) {
+      j--;
+    }
+
+    if (i <= j) {
       swap(array, i, j);
+      i++;
+      j--;
     }
   }
 
-  swap(array, i + 1, end - 1);
-  return i + 1;
+  return i;
 }
 
-function quicksort(array, start = 0, end = array.length) {
-  if (start < end - 1) {
-    const middle = partition(array, start, end);
-    quicksort(array, start, middle);
-    quicksort(array, middle + 1, end);
+function quicksort(array, left = 0, right = array.length - 1) {
+  if (array.length > 1) {
+    const index = partition(array, left, right);
+    if (left < index - 1) {
+      quicksort(array, left, index - 1);
+    }
+    if (index < right) {
+      quicksort(array, index, right);
+    }
   }
 
   return array;
@@ -51,5 +64,10 @@ function simpleQuicksort(array) {
 
   return [...simpleQuicksort(left), pivot, ...simpleQuicksort(right)];
 }
+
+module.exports = {
+  quicksort,
+  simpleQuicksort,
+};
 
 // console.log(simpleQuicksort(array));
