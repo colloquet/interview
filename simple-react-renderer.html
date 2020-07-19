@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      const testDOM = {
+        tag: 'div',
+        props: {
+          class: 'test',
+          style: {
+            background: 'blue',
+            height: '100px',
+            width: '100px',
+          },
+        },
+        children: [
+          {
+            tag: 'div',
+            children: [
+              'Lorem',
+              {
+                tag: 'p',
+                props: {
+                  class: 'test',
+                  style: {
+                    fontSize: '20px',
+                  },
+                },
+                children: [
+                  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam saepe nihil voluptas non architecto sit maiores distinctio suscipit sint ipsa harum aliquam accusantium eos, veniam aspernatur repellat est eaque voluptatum!',
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      function renderer(parent, vDOM) {
+        if (typeof vDOM === 'string') {
+          parent.appendChild(document.createTextNode(vDOM));
+          return;
+        }
+
+        if (typeof vDOM.tag === 'string') {
+          const node = document.createElement(vDOM.tag);
+          for (const key in vDOM.props) {
+            if (vDOM.props.hasOwnProperty(key)) {
+              if (key === 'style') {
+                for (const styleKey in vDOM.props.style) {
+                  if (vDOM.props.style.hasOwnProperty(styleKey)) {
+                    node.style[styleKey] = vDOM.props.style[styleKey];
+                  }
+                }
+              } else {
+                const value = vDOM.props[key];
+                node.setAttribute(key, value);
+              }
+            }
+          }
+          for (let index = 0; index < vDOM.children.length; index++) {
+            const child = vDOM.children[index];
+            renderer(node, child);
+          }
+          parent.appendChild(node);
+        }
+      }
+
+      renderer(document.getElementById('app'), testDOM);
+    </script>
+  </body>
+</html>

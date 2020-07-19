@@ -6,7 +6,6 @@ function swap(array, i, j) {
 
 function insertionSort(array) {
   for (let i = 1; i < array.length; i++) {
-    let minIndex = i;
     for (let j = i; j >= 0; j--) {
       if (array[j] > array[j - 1]) break;
       if (array[j] < array[j - 1]) {
