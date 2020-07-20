@@ -15,7 +15,6 @@ class PubSub {
     if (!(name in this.eventHandlers)) return;
 
     const index = this.eventHandlers[name].indexOf(handler);
-    console.log(index);
     if (index !== -1) {
       this.eventHandlers[name].splice(index, 1);
     }

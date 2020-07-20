@@ -100,18 +100,18 @@ class BinaryTree {
     return this.root;
   }
 
-  inorder(node: TreeNode) {
-    if (node !== null) {
-      this.inorder(node.left);
-      console.log(node.val);
-      this.inorder(node.right);
-    }
-  }
-
   preorder(node: TreeNode) {
     if (node !== null) {
       console.log(node.val);
       this.inorder(node.left);
+      this.inorder(node.right);
+    }
+  }
+
+  inorder(node: TreeNode) {
+    if (node !== null) {
+      this.inorder(node.left);
+      console.log(node.val);
       this.inorder(node.right);
     }
   }
@@ -176,14 +176,21 @@ class BinaryTree {
     return Math.max(leftDepth, rightDepth) + 1;
   }
 
-  maxDistance(node: TreeNode, distance: number = 0) {
+  maxDistance(node: TreeNode) {
     if (!node) return 0;
+    let distance = 0;
 
-    const leftDepth = this.maxDistance(node.left, distance);
-    const rightDepth = this.maxDistance(node.right, distance);
+    function recursion(node) {
+      if (!node) return 0;
+      const leftDepth = recursion(node.left);
+      const rightDepth = recursion(node.right);
+  
+      distance = Math.max(distance, (leftDepth + rightDepth + 1));
+      return Math.max(leftDepth, rightDepth) + 1;
+    }
 
-    distance = Math.max(distance, (leftDepth + rightDepth + 1));
-    return Math.max(leftDepth, rightDepth) + 1;
+    recursion(node);
+    return distance;
   }
 
   maxPathSum() {
