@@ -74,18 +74,24 @@ MyLinkedList.prototype.addAtTail = function (val) {
 MyLinkedList.prototype.addAtIndex = function (index, val) {
   if (index > this.size) return;
 
+  const newNode = new Node(val);
   let count = 0;
   let prev = null;
   let current = this.head;
-  while (count < index) {
-    count++;
-    prev = current;
-    current = current.next;
-  }
 
-  const newNode = new Node(val);
-  newNode.next = current;
-  prev.next = newNode;
+  if (index === 0) {
+    newNode.next = this.head;
+    this.head = newNode;
+  } else {
+    while (count < index) {
+      count++;
+      prev = current;
+      current = current.next;
+    }
+  
+    newNode.next = current;
+    prev.next = newNode;
+  }
   this.size++;
 };
 
